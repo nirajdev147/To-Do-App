@@ -14,11 +14,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.http import HttpResponse
+
+# A direct backup view that reads your Bootstrap file and forces the correct MIME type
+def serve_bootstrap(request):
+    css_path = os.path.join(settings.BASE_DIR, 'static', 'css', 'bootstrap.min.css')
+    with open(css_path, 'r', encoding='utf-8') as f:
+        return HttpResponse(f.read(), content_type="text/css")
 
 urlpatterns = [
+    # Force-routes the exact broken path directly to our custom handler
+    path('static/css/bootstrap.min.css', serve_bootstrap),
+    
     path('admin/', admin.site.urls),
-    path('', include('todo.urls')),  # Connects our todo app paths
-    path('accounts/', include('django.contrib.auth.urls')),  # Built-in login/logout paths
+    path('', include('todo.urls')),  
+    path('accounts/', include('django.contrib.auth.urls')),  
 ]
