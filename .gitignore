@@ -8,3 +8,6 @@ db.sqlite3
 # Virtual environments
 myenv/
 venv/
+
+# Production static folder
+staticfiles/
