@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Crucial for serving live CSS
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # CRUCIAL: Must be exactly here right under SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -89,12 +89,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Tells Django where to look for your root 'static/css/bootstrap.min.css' assets
+# Tells Django to check your root static folder structure
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Reliable WhiteNoise storage backend configs
+# Production storage configuration that forces WhiteNoise to hook up your layouts
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -104,7 +104,7 @@ STORAGES = {
     },
 }
 
-# Fixes strict browser security blocks on Render by mapping content-types properly
+# Fixes the strict browser security block on Render by mapping content-types properly
 mimetypes.add_type("text/css", ".css", True)
 
 # Default auto-created primary key field type
