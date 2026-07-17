@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 import mimetypes
 from pathlib import Path
+import dj_database_url
 
 # 1. Base Directories
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,10 +74,11 @@ WSGI_APPLICATION = 'todo_app.wsgi.application'
 
 # 4. Database Configuration (Default SQLite for local development)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        # Uses your Neon database on Render, falls back to SQLite on your local computer
+        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
+        conn_max_age=600
+    )
 }
 
 # 5. Internationalization
